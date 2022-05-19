@@ -1,5 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 var corsOptions = {
   origin: '*',
@@ -22,10 +25,11 @@ const db = require("./app/models");
 //});
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to album application." });
 });
-require("./app/routes/tutorial.routes")(app);
-require("./app/routes/lesson.routes")(app);
+require("./app/routes/album.routes")(app);
+require("./app/routes/tracks.routes")(app);
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
