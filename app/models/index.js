@@ -16,10 +16,12 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 db.users = require("./user.model.js")(sequelize, Sequelize);
 db.album = require("./album.model.js")(sequelize, Sequelize);
+db.artist = require("./artist.model.js")(sequelize, Sequelize);
 db.track = require("./track.model.js")(sequelize, Sequelize);
 
 db.users.hasMany(db.album)
 db.users.hasMany(db.track)
+db.users.hasMany(db.artist)
 db.album.belongsToMany(db.track,{
   through: "album_track",
   as: "tracks",
