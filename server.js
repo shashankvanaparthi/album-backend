@@ -1,5 +1,8 @@
 const express = require("express");
 const cors = require("cors");
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 var corsOptions = {
   origin: '*',
@@ -12,20 +15,23 @@ app.options('*', cors());
 app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
-// set up database 
+// set up database
 const db = require("./app/models");
 // for not to recreate each time database but add new things
- db.sequelize.sync();
-// for devel to recreate each time database 
+ db.sequelize.sync({alter:true});
+// for devel to recreate each time database
 //db.sequelize.sync({ force: true }).then(() => {
 //   console.log("Drop and re-sync db.");
 //});
 // simple route
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome to album application." });
 });
-require("./app/routes/tutorial.routes")(app);
-require("./app/routes/lesson.routes")(app);
+require("./app/routes/user.routes")(app);
+require("./app/routes/album.routes")(app);
+require("./app/routes/tracks.routes")(app);
+
+
 // set port, listen for requests
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
