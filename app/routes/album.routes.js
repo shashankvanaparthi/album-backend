@@ -5,6 +5,7 @@ module.exports = app => {
     router.post("/album",albums.saveAlbum)
     router.post("/album/addTrack",albums.addTrackToAlbum)
     router.get("/album/all",albums.getAllAlbums)
+    router.get("/album/search",albums.searchAlbums)
     router.get("/album/:id",albums.getAlbumById)
     router.delete("/album/all",albums.deleteAllAlbum)
     router.delete("/album/:id",albums.deleteAlbumById)

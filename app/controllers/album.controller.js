@@ -92,6 +92,28 @@ exports.deleteAllAlbum = (req, res) => {
     console.log("Delete All Albums is called")
 }
 
+exports.searchAlbums = async (req, res) => {
+    const userId = req.query.userId;
+    const searchKey = req.query.key;
+    console.log(userId)
+    console.log(searchKey)
+
+    const albums = await Album.findAll({
+        include:[{
+            model: Track, as:"tracks",
+        }],
+        where:{
+            [Op.or]: [
+                Sequelize.where(Sequelize.col('tracks.name'), 'like' ,'%' + searchKey + '%'),
+                Sequelize.where(Sequelize.col('album.name'), 'like' ,'%' + searchKey + '%')
+            ],
+            userId: userId
+        }
+    })
+
+    res.status(200).json(albums)
+}
+
 exports.updateAlbum = async (req, res) => {
     console.log("update Album is called")
     const userId = req.body.userId;
@@ -102,18 +124,4 @@ exports.updateAlbum = async (req, res) => {
     }, error => {
         console.log(error)
     })
-
-    // const user = await User.findOne({ where: { id: userId } })
-
-    // Find the album in db and the update it
-
-    // if (user) {
-    //     console.log(user)
-    //     user.createAlbum(album).then(response => {
-    //         res.status(200).json(response)
-    //     }, error => {
-    //         res.status(400).json({ "message": "Some Error occured" })
-    //         console.log(error)
-    //     })
-    // }
 }
