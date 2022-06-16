@@ -67,8 +67,9 @@ exports.deleteTrackById = async (req,res)=>{
     const status = await Track.destroy({where:{id:trackId}})
     if(status){
       res.status(200).json({"message":"Delete Success"})
+    }else{
+        res.status(400).json({"message":"Delete Failed"})
     }
-    res.status(400).json({"message":"Delete Failed"})
 }
 
 exports.deleteTrackFromAlbum = async (req,res)=>{
@@ -91,6 +92,15 @@ exports.deleteTrackFromAlbum = async (req,res)=>{
     res.status(200).json(album);
 }
 
-exports.updateTrack = (req,res)=>{
+exports.updateTrack =async (req,res)=>{
     console.log("update Track is called")
+    const userId = req.body.userId;
+    const track = req.body.track;
+    console.log(track)
+    const response = await Track.update({name:track.name,link:track.link,duration:track.duration},{where:{id:track.id,userId:userId}})
+    if(response>0){
+        res.status(200).json({"message":"Update Successful"})
+    }else{
+        res.status(400).json({"error":"Something went wrong"})
+    }
 }
