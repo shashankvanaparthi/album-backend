@@ -43,10 +43,25 @@ exports.deleteAllArtist = (req,res)=>{
     console.log("Delete All Artist is called")
 }
 
-exports.deleteArtistById = (req,res)=>{
+exports.deleteArtistById =async (req,res)=>{
     console.log("Delete Artist By Id is called")
+    const artistId = req.params.id
+    const status = await Artist.destroy({where:{id:artistId}})
+    if(status){
+      res.status(200).json({"message":"Delete Success"})
+    }else{
+        res.status(400).json({"message":"Delete Failed"})
+    }
 }
 
-exports.updateArtist = (req,res)=>{
+exports.updateArtist =async (req,res)=>{
     console.log("update Artist is called")
+    const userId = req.body.userId;
+    const artist = req.body.artist;
+    const response = await Artist.update({name:artist.name},{where:{id:artist.id,userId:userId}})
+    if(response>0){
+        res.status(200).json({"message":"Update Successful"})
+    }else{
+        res.status(400).json({"error":"Something went wrong"})
+    }
 }
