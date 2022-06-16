@@ -115,6 +115,20 @@ exports.searchAlbums = async (req, res) => {
             userId: userId
         }
     })
+
+    res.status(200).json(albums)
+}
+
+exports.updateAlbum = async (req, res) => {
+    console.log("update Album is called")
+    const userId = req.body.userId;
+    const album = req.body.album;
+    Album.update({ name: album.name, description: album.description, artistId: album.artistId }, { where: { userId: userId, id: album.id } }).then(response => {
+        console.log(response)
+        res.status(200).json({ "message": "Update Success" })
+    }, error => {
+        console.log(error)
+    })
 }
 
 exports.favourite = async (req,res)=>{
@@ -148,20 +162,27 @@ exports.getAllSaleAlbums = async (req,res)=>{
     const albums = await Album.findAll({where:{userId:{
         [Op.ne]:userId
     },isForSale:true}})
+    res.status(200).json(albums) 
+}
+
+
+exports.getAllFavourites = async (req,res)=>{
+    const userId = req.params.id;
+    console.log(userId)
+    const albums = await Album.findAll({where:{userId:userId,isFavourite:true}})
     res.status(200).json(albums)
 }
 
-    res.status(200).json(albums)
-}
 
-exports.updateAlbum = async (req, res) => {
-    console.log("update Album is called")
-    const userId = req.body.userId;
-    const album = req.body.album;
-    Album.update({ name: album.name, description: album.description, artistId: album.artistId }, { where: { userId: userId, id: album.id } }).then(response => {
+exports.purchaseAlbum = async (req,res) =>{
+    const userId = req.body.userId
+    const album = req.body.album
+    console.log(album)
+    Album.update({userId:userId,isForSale:false,isFavourite:false},{where:{id:album.id}}).then(response=>{
         console.log(response)
-        res.status(200).json({ "message": "Update Success" })
-    }, error => {
-        console.log(error)
+        res.status(200).json({"message":"Purchase Successful"})
+    },error=>{
+        console.log(error);
+        res.status(400).json({"error":"Something went wrong"})
     })
 }
