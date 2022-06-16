@@ -6,7 +6,13 @@ module.exports = (sequelize, Sequelize) => {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    name: {
+    firstName: {
+     type: Sequelize.STRING 
+    },
+    lastName: {
+      type: Sequelize.STRING
+    },
+    phoneNo:{
       type: Sequelize.STRING
     },
     email: {
@@ -14,6 +20,9 @@ module.exports = (sequelize, Sequelize) => {
     },
     password: {
       type: Sequelize.STRING
+    },
+    resetPasswordToken:{
+      type: Sequelize.INTEGER,
     },
     createdAt: {
       allowNull: false,
